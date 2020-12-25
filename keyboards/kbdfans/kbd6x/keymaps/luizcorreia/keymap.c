@@ -1,13 +1,30 @@
 /*
- * dbroqua HHKB Layout
+ * luizcorreia HHKB Layout
  */
 #include QMK_KEYBOARD_H
+
+enum custom_keycodes {
+    CLEAR = SAFE_RANGE,
+};
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+    case CLEAR:
+        if (record->event.pressed) {
+            // when keycode CLEAR is pressed
+            SEND_STRING(SS_LCTRL("a") SS_TAP(X_DELETE));
+        } else {
+            // when keycode CLEAR is released
+        }
+        break;
+    }
+    return true;
+};
 
 enum layer_names {
   _DEFAULT,
   _ALTERNATE,
-  _FN,
-  _RGB
+  _FN
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -21,7 +38,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |-----------------------------------------------------------------------------------------+
      * | Shift     |  Z  |  X  |  C  |  V  |  B  |  N  |  M  |  ,  |  .  |  /  | Shift     | fn  |
      * +-----------------------------------------------------------------------------------------+
-     *         | Alt |  Gui   |                    Space                   | Gui   |RCtrl|
+     *         | Gui |  Alt   |                    Space                   | AltGr |RCtrl|
      *         `-------------------------------------------------------------------------´
       */
     [_DEFAULT] = LAYOUT(
@@ -29,7 +46,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, KC_BSPC,
         LCTL_T(KC_CAPS), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT, KC_ENT,
         KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RSFT, MO(_FN),
-        KC_TRNS, KC_LALT, KC_LGUI, /*        */ KC_SPC, KC_RGUI, KC_RCTL, KC_TRNS),
+        KC_TRNS, KC_LGUI, KC_LALT, /*        */ KC_SPC, KC_RALT, KC_RCTL, KC_TRNS),
     /* Alternamte layer: swap alt/gui
      * ,-----------------------------------------------------------------------------------------.
      * | Esc |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |  0  |  -  |  =  |  \  |  `  |
@@ -40,7 +57,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |-----------------------------------------------------------------------------------------+
      * | Shift     |  Z  |  X  |  C  |  V  |  B  |  N  |  M  |  ,  |  .  |  /  | Shift     | fn  |
      * +-----------------------------------------------------------------------------------------+
-     *         | Gui |  Alt   |                    Space                   | AltGr |RCtrl|
+     *         | Alt |  Gui   |                    Space                   | Gui   |RCtrl|
      *         `-------------------------------------------------------------------------´
       */
     [_ALTERNATE] = LAYOUT(
@@ -48,8 +65,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, KC_BSPC,
         LCTL_T(KC_CAPS), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT, KC_ENT,
         KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RSFT, MO(_FN),
-        KC_TRNS, KC_LGUI, KC_LALT, /*        */ KC_SPC, KC_RALT, KC_RCTL, KC_TRNS),
-
+        KC_TRNS, KC_LALT, KC_LGUI, /*        */ KC_SPC, KC_RGUI, KC_RCTL, KC_TRNS),
     /* FN Layer
      * ,-----------------------------------------------------------------------------------------.
      * | Pwr |  F1  | F2  | F3  | F4  | F5  | F6  | F7  | F8  | F9  | F0  | F11 | F12 | Ins | Del|
@@ -65,30 +81,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       */
     [_FN] = LAYOUT(
         KC_PWR, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_INS, KC_DEL,
-        KC_CAPS, RGB_TOG, RGB_MOD, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_PSCR, KC_SLCK, KC_PAUS, KC_UP, KC_TRNS, KC_TRNS,
+        KC_CAPS, RGB_TOG, RGB_MOD, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_PSCR, KC_SLCK, KC_PAUS, KC_UP, KC_TRNS, CLEAR,
         KC_TRNS, KC_VOLD, KC_VOLU, KC_MUTE, KC_EJCT, KC_TRNS, KC_PAST, KC_PSLS, KC_HOME, KC_PGUP, KC_LEFT, KC_RGHT, KC_TRNS,
-        KC_TRNS, KC_MPRV, KC_MPLY, KC_MNXT, KC_TRNS, KC_TRNS, KC_PPLS, KC_PMNS, KC_END, KC_PGDN, KC_DOWN, DF(_RGB), KC_TRNS,
+        KC_TRNS, KC_MPRV, KC_MPLY, KC_MNXT, KC_TRNS, KC_TRNS, KC_PPLS, KC_PMNS, KC_END, KC_PGDN, KC_DOWN, KC_TRNS, KC_TRNS,
         KC_TRNS, DF(_DEFAULT), DF(_ALTERNATE), KC_TRNS, KC_MSTP, KC_TRNS, KC_TRNS),
-
-
-    /* RGB Layer
-     * ,-----------------------------------------------------------------------------------------.
-     * | RST |      |     |     |     |     |     |     |     |     |     |     |     |     |    |
-     * |-----------------------------------------------------------------------------------------+
-     * |        |R_TOG|R_MOD|RRMOD|R_HUI|R_HUD|R_SAI|R_SAD|R_VAI|R_VAD|R_SPI|R_SPD|     |        |
-     * |-----------------------------------------------------------------------------------------+
-     * |         |R_M_P|R_M_B|R_M_R|R_MSW|R_MSN|R_M_K|R_M_X|R_M_G|     |      |     |            |
-     * |-----------------------------------------------------------------------------------------+
-     * |           |BL_TG|BL_ST|BL_ON|BL_OF|BL_IN|BL_DC|BL_BR|     |     |     |           |     |
-     * +-----------------------------------------------------------------------------------------+
-     *         | _DEF| _ALTER |                                            |       |     |
-     *         `-------------------------------------------------------------------------´
-     */
-    [_RGB] = LAYOUT(
-        RESET, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, RGB_TOG, RGB_MOD, RGB_RMOD, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD, RGB_VAI, RGB_VAD, RGB_SPI, RGB_SPD, KC_TRNS, KC_TRNS,
-        KC_TRNS, RGB_M_P, RGB_M_B, RGB_M_R, RGB_M_SW, RGB_M_SN, RGB_M_K, RGB_M_X, RGB_M_G, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, BL_TOGG, BL_STEP, BL_ON, BL_OFF, BL_INC, BL_DEC, BL_BRTG, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, DF(_DEFAULT), DF(_ALTERNATE), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS)
 
 };
