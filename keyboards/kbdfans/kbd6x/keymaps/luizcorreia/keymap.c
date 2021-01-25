@@ -24,7 +24,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 enum layer_names {
   _DEFAULT,
   _ALTERNATE,
-  _FN
+  _FN,
+  _FN2
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -85,5 +86,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS, KC_VOLD, KC_VOLU, KC_MUTE, KC_EJCT, KC_TRNS, KC_PAST, KC_PSLS, KC_HOME, KC_PGUP, KC_LEFT, KC_RGHT, KC_TRNS,
         KC_TRNS, KC_MPRV, KC_MPLY, KC_MNXT, KC_TRNS, KC_TRNS, KC_PPLS, KC_PMNS, KC_END, KC_PGDN, KC_DOWN, KC_TRNS, KC_TRNS,
         KC_TRNS, DF(_DEFAULT), DF(_ALTERNATE), KC_TRNS, KC_MSTP, KC_TRNS, KC_TRNS),
+
+        /* FN2 Layer
+     * ,-----------------------------------------------------------------------------------------.
+     * | Pwr |  F13  | F14  | F15  | F16  | F17  | F18  | F19  | F20  | F21  | F22  | F11 | F12 | Ins | Del|
+     * |-----------------------------------------------------------------------------------------+
+     * | Caps   |     |     |     |     |     |     |     |PrtSc| Slck| Paus|  Up |     |        |
+     * |-----------------------------------------------------------------------------------------+
+     * |         | Vol-| Vol+| Mute|Eject|     | *   | /   | Home| PgUp| Left |Right|            |
+     * |-----------------------------------------------------------------------------------------+
+     * |           | Prev| Play| Next|     |     | +   | -   | End |PgDwn| Down| _RGB      |     |
+     * +-----------------------------------------------------------------------------------------+
+     *         | _DEF| _ALTER |                                            | Stop  |     |
+     *         `-------------------------------------------------------------------------´
+      */
+    [_FN] = LAYOUT(
+        KC_PWR, KC_F13, KC_F14, KC_F15, KC_F16, KC_F17, KC_F18, KC_F19, KC_F20, KC_F21, KC_F22, KC_F11, KC_F12, KC_INS, KC_DEL,
+        KC_CAPS, RGB_TOG, RGB_MOD, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_PSCR, KC_SLCK, KC_PAUS, KC_UP, KC_TRNS, CLEAR,
+        KC_TRNS, KC_VOLD, KC_VOLU, KC_MUTE, KC_EJCT, KC_TRNS, KC_PAST, KC_PSLS, KC_HOME, KC_PGUP, KC_LEFT, KC_RGHT, KC_TRNS,
+        KC_TRNS, KC_MPRV, KC_MPLY, KC_MNXT, KC_TRNS, KC_TRNS, KC_PPLS, KC_PMNS, KC_END, KC_PGDN, KC_DOWN, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_LGUI, KC_LALT, KC_TRNS, KC_MSTP, KC_TRNS, KC_TRNS),
 
 };
